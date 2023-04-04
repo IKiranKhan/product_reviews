@@ -1,24 +1,20 @@
-psql:
+db:
   server: localhost
   port: 5432
   database: postgres
   username: postgres
   password: test
 
-email:
-  to: kiran.khan19978@gmail.com
-  cc: kiran.khan19978@gmail.com
-
 source:
   product: https://s3-eu-west-1.amazonaws.com/bigdata-team/job-interview/metadata.json.gz
   reviews: https://s3-eu-west-1.amazonaws.com/bigdata-team/job-interview/item_dedup.json.gz
 
-destination:
+target:
   directory: 'C:\kiran\Jet\datasets'
   product_filename: metadata.json.gz
   reviews_filename: item_dedup.json.gz
  
-unzipped:
+uncompressed:
   product: C:\kiran\Jet\datasets\products.json
   reviews: C:\kiran\Jet\datasets\item_dedup.json
 
