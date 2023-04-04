@@ -12,7 +12,7 @@
 {% endif %}
 
 SELECT 
-row_number() over()+{{ max_id }} as sk_category_dim,
+(row_number() over()+{{ max_id }})::int4 as sk_category_dim,
 category,
 sub_category 
 from {{source('justeattakeaway','products_dim_staging')}} 
