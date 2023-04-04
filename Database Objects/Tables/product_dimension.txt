@@ -1,0 +1,21 @@
+-- justeattakeaway.product_dimension definition
+
+-- Drop table
+
+-- DROP TABLE justeattakeaway.product_dimension;
+
+CREATE TABLE justeattakeaway.product_dimension (
+	sk_product_dim bigserial NOT NULL,
+	asin bpchar(10) NOT NULL,
+	title text NOT NULL,
+	description text NOT NULL,
+	image_url text NOT NULL,
+	also_viewed text NOT NULL,
+	also_bought text NOT NULL,
+	bought_together text NOT NULL,
+	buy_after_viewing text NOT NULL,
+	viewed_and_bought_flag int2 NOT NULL,
+	viewed_and_bought text NOT NULL,
+	CONSTRAINT productdim_pk PRIMARY KEY (sk_product_dim)
+);
+CREATE INDEX idx_product_dim_key ON justeattakeaway.product_dimension USING btree (asin);

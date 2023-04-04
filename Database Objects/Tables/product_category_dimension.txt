@@ -1,0 +1,13 @@
+-- justeattakeaway.product_category_dimension definition
+
+-- Drop table
+
+-- DROP TABLE justeattakeaway.product_category_dimension;
+
+CREATE TABLE justeattakeaway.product_category_dimension (
+	sk_category_dim serial NOT NULL,
+	category varchar(100) NOT NULL,
+	sub_category varchar(100) NOT NULL,
+	CONSTRAINT product_categorydim_pk PRIMARY KEY (sk_category_dim)
+);
+CREATE INDEX idx_productcat_dim_key ON justeattakeaway.product_category_dimension USING btree (category, sub_category);

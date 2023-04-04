@@ -1,0 +1,14 @@
+CREATE OR REPLACE FUNCTION justeattakeaway.parse_base_category(input_string text)
+ RETURNS text
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+  RETURN ( 
+case when substr(input_string,3,1)='"' then
+nullif(replace(replace(replace(split_part(input_string, '", ', 1),']',''),'[',''), '"',''),'') 
+else 
+nullif(replace(replace(replace(split_part(input_string, ''', ', 1),']',''),'[',''), '''',''),'') end
+);
+END;
+$function$
+;

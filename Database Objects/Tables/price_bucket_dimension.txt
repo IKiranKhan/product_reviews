@@ -1,0 +1,14 @@
+-- justeattakeaway.price_bucket_dimension definition
+
+-- Drop table
+
+-- DROP TABLE justeattakeaway.price_bucket_dimension;
+
+CREATE TABLE justeattakeaway.price_bucket_dimension (
+	sk_price_bucket_dim serial NOT NULL,
+	bucket_name varchar(10) NOT NULL,
+	bucket_lower_limit float8 NOT NULL,
+	bucket_upper_limit float8 NULL,
+	CONSTRAINT price_bucketdim_pk PRIMARY KEY (sk_price_bucket_dim)
+);
+CREATE INDEX idx_price_limits ON justeattakeaway.price_bucket_dimension USING btree (bucket_lower_limit, bucket_upper_limit);

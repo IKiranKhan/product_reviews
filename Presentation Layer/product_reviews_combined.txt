@@ -1,0 +1,34 @@
+CREATE OR REPLACE VIEW justeattakeaway.product_reviews_combined
+AS SELECT 
+    dat.date,
+    dat.year,
+    dat.quarter,   
+    dat.month,
+    product_dim.asin,
+    product_dim.description,
+    product_dim.title,
+    product_dim.image_url,
+    product_dim.also_viewed,
+    product_dim.also_bought,
+    product_dim.bought_together,
+    product_dim.buy_after_viewing,
+    product_dim.viewed_and_bought,
+    product_dim.viewed_and_bought_flag,
+    cate.category,
+    cate.sub_category,
+    reviewer.reviewerid,
+    reviewer.reviewer_name,
+    bucket.bucket_name,
+    fact.sk_product_reviews_fact ,
+    fact.product_price,
+    fact.sales_rank,
+    fact.overall_rating,
+    fact.review_likes ,
+    fact.review_dislikes ,
+    fact.viewed_and_bought_count
+   FROM justeattakeaway.product_reviews_fact fact
+     JOIN justeattakeaway.calendar_dimension dat ON fact.date = dat.date
+     LEFT JOIN justeattakeaway.product_dimension product_dim ON fact.sk_product_dim  = product_dim.sk_product_dim
+     JOIN justeattakeaway.product_category_dimension cate ON fact.sk_category_dim  = cate.sk_category_dim
+     LEFT JOIN justeattakeaway.reviewer_dimension reviewer ON fact.sk_reviewer_dim  = reviewer.sk_reviewer_dim
+     LEFT JOIN justeattakeaway.price_bucket_dimension bucket ON fact.sk_price_bucket_dim  = bucket.sk_price_bucket_dim;

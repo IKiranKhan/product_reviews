@@ -1,0 +1,17 @@
+-- justeattakeaway.reviewer_dimension definition
+
+-- Drop table
+
+-- DROP TABLE justeattakeaway.reviewer_dimension;
+
+CREATE TABLE justeattakeaway.reviewer_dimension (
+	sk_reviewer_dim bigserial NOT NULL,
+	reviewerid varchar(20) NOT NULL,
+	reviewer_name varchar(100) NOT NULL,
+	valid_from date NOT NULL,
+	valid_to date NOT NULL,
+	CONSTRAINT reviewerdim_pk PRIMARY KEY (sk_reviewer_dim)
+);
+CREATE INDEX idx_dim_reviewer_id ON justeattakeaway.reviewer_dimension USING btree (reviewerid, valid_from, valid_to);
+CREATE INDEX idx_dim_reviewer_sk ON justeattakeaway.reviewer_dimension USING btree (sk_reviewer_dim, valid_from, valid_to);
+CREATE INDEX idx_reviewerdim_validto ON justeattakeaway.reviewer_dimension USING btree (valid_to);

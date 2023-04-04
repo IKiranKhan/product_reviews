@@ -1,0 +1,51 @@
+version: 2
+sources:
+  - name: justeattakeaway
+    database: postgres  
+    schema: justeattakeaway  
+    tables:
+      - name: calendar_dimension
+      - name: product_dimension
+      - name: product_category_dimension
+      - name: price_bucket_dimension
+      - name: reviewer_dimension
+models:
+  - name: product_reviews_fact 
+    columns:
+          - name: sk_product_reviews_fact
+            description: surrogate key
+            tests:
+              - not_null
+              - unique
+          - name: date
+            description: date column
+            tests:
+              - not_null
+          - name: sk_product_dim
+            description: foreign key of product dimension
+            tests:
+              - not_null
+          - name: sk_category_dim
+            description: foreign key of category dimension
+            tests:
+              - not_null
+          - name: sk_price_bucket_dim
+            description: foreign key of price bucket dimension
+            tests:
+              - not_null
+          - name: sk_reviewer_dim
+            description: foreign key of reviewer dimension
+            tests:
+              - not_null
+          - name: product_price
+            description: price of product
+          - name: sales_rank
+            description: sales rank of the product
+          - name: overall_rating
+            description: overall rating given by reviewers
+          - name: review_likes
+            description: likes on a review
+          - name: review_dislikes
+            description: dislikes on a review
+          - name: viewed_and_bought_count
+            description: counts of the products which were viewed and bought

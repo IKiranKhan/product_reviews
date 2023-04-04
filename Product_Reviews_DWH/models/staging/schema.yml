@@ -1,0 +1,128 @@
+
+version: 2
+sources:
+  - name: justeattakeaway
+    database: postgres  
+    schema: justeattakeaway  
+    tables:
+      - name: products_raw
+      - name: reviews_raw
+      
+models:
+  - name: products_dim_staging
+    columns:
+          - name: "asin"
+            description: unique identifier for products
+            tests:
+              - not_null
+              - unique
+          - name: title
+            description: title of the product
+            tests:
+              - not_null
+          - name: description
+            description: description of the product
+            tests:
+              - not_null
+          - name: image_url
+            description: image url of the product
+            tests:
+              - not_null
+          - name: also_viewed
+            description: list of products which were also viewed
+            tests:
+              - not_null
+          - name: also_bought
+            description: list of products which were also bought
+            tests:
+              - not_null
+          - name: bought_together
+            description: list of products which were bought in same cart
+            tests:
+              - not_null
+          - name: buy_after_viewing
+            description: products which were bought after they were viewed
+            tests:
+              - not_null
+          - name: viewed_and_bought_flag
+            description: indicator for any products where products viewed and bought match
+            tests:
+              - not_null
+          - name: viewed_and_bought_count
+            description: number of products which were viewed and bought
+            tests:
+              - not_null
+          - name: viewed_and_bought
+            description: asins of products viewed and bought
+            tests:
+              - not_null
+          - name: price
+            description: price of the product
+            tests:
+              - not_null
+          - name: category
+            description: category of the product
+            tests:
+              - not_null
+          - name: sub_category
+            description: sub category of the product
+            tests:
+              - not_null
+          - name: sales_rank
+            description: sale rank of the product
+            tests:
+              - not_null
+          - name: process_flag
+            description: indiactor to see if data from staging table has been moved to dimensions and fact
+            tests:
+              - not_null
+  - name: reviews_dim_staging
+    columns:
+          - name: reviewerid
+            description: identifier for reviewer
+            tests:
+              - not_null
+          - name: asin
+            description: unique identifier of the product
+            tests:
+              - not_null
+          - name: reviewer_name
+            description: name of the reviewer
+            tests:
+              - not_null
+          - name: helpful
+            description: helpful votes on a review
+            tests:
+              - not_null
+          - name: up_votes
+            description: likes
+            tests:
+              - not_null
+          - name: down_votes
+            description: dislikes
+            tests:
+              - not_null
+          - name: overall
+            description: overall rating
+            tests:
+              - not_null
+          - name: summary
+            description: summary of the review
+            tests:
+              - not_null
+          - name: review_date
+            description: review_date
+            tests:
+              - not_null
+          - name: review_text
+            description: full text of the review
+            tests:
+              - not_null
+          - name: row_number
+            description: row number to see repeating reviwerid,asin
+            tests:
+              - not_null
+          - name: process_flag
+            description: flag to keep track of data model loading
+            tests:
+              - not_null

@@ -1,0 +1,13 @@
+-- justeattakeaway.calendar_dimension definition
+
+-- Drop table
+
+-- DROP TABLE justeattakeaway.calendar_dimension;
+
+CREATE TABLE justeattakeaway.calendar_dimension (
+	"date" date NOT NULL,
+	"year" int4 NOT NULL,
+	quarter int4 NOT NULL,
+	"month" int4 NOT NULL,
+	CONSTRAINT calendar_pk PRIMARY KEY (date)
+);

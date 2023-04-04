@@ -1,0 +1,30 @@
+-- justeattakeaway.product_reviews_fact definition
+
+-- Drop table
+
+-- DROP TABLE justeattakeaway.product_reviews_fact;
+
+CREATE TABLE justeattakeaway.product_reviews_fact (
+	sk_product_reviews_fact bigserial NOT NULL,
+	fk_calendar_dim date NOT NULL,
+	fk_product_dim int4 NOT NULL DEFAULT '-1'::integer,
+	fk_category_dim int4 NOT NULL DEFAULT '-1'::integer,
+	fk_price_bucket_dim int4 NOT NULL DEFAULT '-1'::integer,
+	fk_reviewer_dim int4 NOT NULL DEFAULT '-1'::integer,
+	product_price float8 NOT NULL DEFAULT 0,
+	sales_rank int4 NULL,
+	overall_rating int4 NULL,
+	review_likes int4 NULL,
+	review_dislikes int4 NULL,
+	viewed_and_bought_count int4 NULL,
+	CONSTRAINT fact_pk PRIMARY KEY (date, sk_product_reviews_fact),
+	CONSTRAINT fact_uniquekey UNIQUE (date, sk_product_dim, sk_category_dim, sk_price_bucket_dim, sk_reviewer_dim)
+)
+PARTITION BY RANGE (date);
+CREATE INDEX idx_prd_reviews_fct ON ONLY justeattakeaway.product_reviews_fact USING btree (date, sk_product_dim, sk_category_dim, sk_price_bucket_dim, sk_reviewer_dim);
+-- justeattakeaway.product_reviews_fact foreign keys
+ALTER TABLE justeattakeaway.product_reviews_fact ADD CONSTRAINT review_date_fk FOREIGN KEY ("date") REFERENCES justeattakeaway.calendar_dimension("date");
+ALTER TABLE justeattakeaway.product_reviews_fact ADD CONSTRAINT sk_categ_fk FOREIGN KEY (sk_category_dim) REFERENCES justeattakeaway.product_category_dimension(sk_category_dim);
+ALTER TABLE justeattakeaway.product_reviews_fact ADD CONSTRAINT sk_price_bucket_fk FOREIGN KEY (sk_price_bucket_dim) REFERENCES justeattakeaway.price_bucket_dimension(sk_price_bucket_dim);
+ALTER TABLE justeattakeaway.product_reviews_fact ADD CONSTRAINT sk_product_fk FOREIGN KEY (sk_product_dim) REFERENCES justeattakeaway.product_dimension(sk_product_dim);
+ALTER TABLE justeattakeaway.product_reviews_fact ADD CONSTRAINT sk_reviewer_fk FOREIGN KEY (sk_reviewer_dim) REFERENCES justeattakeaway.reviewer_dimension(sk_reviewer_dim);

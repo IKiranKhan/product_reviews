@@ -1,0 +1,95 @@
+
+version: 2
+sources:
+  - name: justeattakeaway
+    database: postgres  
+    schema: justeattakeaway  
+    tables:
+      - name: product_category_dim_staging
+      - name: products_dim_staging
+      - name: reviews_dim_staging
+
+models:
+  - name: calendar_dimension
+    on_schema_change: 'fail'
+    columns:
+          - name: "date"
+            description: Primary key of the table
+            tests:
+              - not_null
+              - unique
+          - name: year
+            description: year
+            tests:
+              - not_null
+          - name: quarter
+            description: quarter
+            tests:
+              - not_null
+          - name: month
+            description: month
+            tests:
+              - not_null
+  - name: product_category_dimension
+    columns:
+          - name: sk_category_dim
+            description: surrogate key
+            tests:
+              - not_null
+              - unique
+          - name: category
+            description: category of product
+            tests:
+              - not_null
+          - name: sub_category
+            description: sub category of product
+            tests:
+              - not_null
+  - name: products_dimension 
+    columns:
+          - name: sk_product_dim
+            description: surrogate key
+            tests:
+              - not_null
+              - unique
+          - name: asin
+            description: unique identifier for products
+            tests:
+              - not_null
+              - unique
+          - name: title
+            description: title of the product
+            tests:
+              - not_null
+          - name: description
+            description: description of the product
+            tests:
+              - not_null
+          - name: image_url
+            description: image url of the product
+            tests:
+              - not_null
+          - name: also_viewed
+            description: list of products which were also viewed
+            tests:
+              - not_null
+          - name: also_bought
+            description: list of products which were also bought
+            tests:
+              - not_null
+          - name: bought_together
+            description: list of products which were bought in same cart
+            tests:
+              - not_null
+          - name: buy_after_viewing
+            description: products which were bought after they were viewed
+            tests:
+              - not_null
+          - name: viewed_and_bought_flag
+            description: indicator for any products where products viewed and bought match
+            tests:
+              - not_null
+          - name: viewed_and_bought
+            description: asins of products viewed and bought
+            tests:
+              - not_null
