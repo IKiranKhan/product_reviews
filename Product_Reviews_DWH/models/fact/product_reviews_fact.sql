@@ -11,14 +11,20 @@
     {% endset %}
     {%- set results = dbt_utils.get_single_value(sql_statement) -%}
 {% endif %}
+{% if is_incremental() %}
+    {% set sql_statement1 %}
+        select max(FK_calendar_dim) from {{ this }}
+    {% endset %}
+    {%- set results_dt = dbt_utils.get_single_value(sql_statement1) -%}
+{% endif %}
 
 SELECT  
 row_number() over()+{{results}} as sk_product_reviews_fact,
-'2000-01-01'::date as date,
-coalesce(prd_dim.sk_product_dim,-1)::int4 as sk_product_dim,
-coalesce(category.sk_category_dim,-1) as sk_category_dim,
-coalesce(prd_bucket.sk_price_bucket_dim,-1) as sk_price_bucket_dim,
-coalesce(reviewer_dim.sk_reviewer_dim,-1)::int4 as sk_reviewer_dim,
+({{results_dt }}::date+ interval '1' day) as FK_calendar_dim,
+coalesce(prd_dim.sk_product_dim,-1)::int4 as FK_product_dim,
+coalesce(category.sk_category_dim,-1) as FK_category_dim,
+coalesce(prd_bucket.sk_price_bucket_dim,-1) as FK_price_bucket_dim,
+coalesce(reviewer_dim.sk_reviewer_dim,-1)::int4 as FK_reviewer_dim,
 prd_dim_stg.price as product_price,
 prd_dim_stg.sales_rank::int4 as sales_rank,
 reviews_stag.overall::int4 as overall_rating,
@@ -38,7 +44,7 @@ LEFT JOIN {{ source('justeattakeaway','price_bucket_dimension')}}  prd_bucket
 ON prd_dim_stg.price >= prd_bucket.bucket_lower_limit  and  prd_dim_stg.price<=prd_bucket.bucket_upper_limit
 -- reviews staging table
 LEFT JOIN {{ source('justeattakeaway','reviews_dim_staging')}}  as reviews_stag
-ON prd_dim.asin = reviews_stag.asin and reviews_stag.review_date = '2000-01-01'
+ON prd_dim.asin = reviews_stag.asin and reviews_stag.review_date = ({{results_dt }}::date+ interval '1' day)
 -- reviewer dim table
 LEFT JOIN {{ source('justeattakeaway','reviewer_dimension')}}  reviewer_dim
 ON reviews_stag.reviewerid =reviewer_dim.reviewerid and reviews_stag.review_date >=reviewer_dim.valid_from and reviews_stag.review_date <reviewer_dim.valid_to
