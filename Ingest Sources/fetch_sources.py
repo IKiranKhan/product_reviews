@@ -47,7 +47,7 @@ def load_raw_data(file_name, table_name, config)
 
             #Create PostgreSQL Connection
             try
-                conn = psycopg2.connect(host = config['psql']['server'],database = config['psql']['database'],user = config['psql']['username'],password = config['psql']['password'],port = config['psql']['port'])
+                conn = psycopg2.connect(host = config['db']['server'],database = config['db']['database'],user = config['db']['username'],password = config['db']['password'],port = config['db']['port'])
                 cursor = conn.cursor()
                 if table_name =='reviews_json'
 
@@ -61,8 +61,8 @@ def load_raw_data(file_name, table_name, config)
             except psycopg2.Error as e
                  print(f'Error while creating database connection {e}')
 config = read_yaml()
-download_uncompress(config['source']['product'], 'products.gz',config['destination']['directory'] )
-download_uncompress(config['source']['reviews'], 'reviews.gz',config['destination']['directory'] )
-load_raw_data(config['unzipped']['product'],'product_json', config) #Load Raw Products data
-load_raw_data(config['unzipped']['reviews'],'reviews_json', config) #Load Raw Reviews data
+download_uncompress(config['source']['product'], 'products.gz',config['target']['directory'] )
+download_uncompress(config['source']['reviews'], 'reviews.gz',config['target']['directory'] )
+load_raw_data(config['uncompressed']['product'],'product_json', config) #Load Raw Products data
+load_raw_data(config['uncompressed']['reviews'],'reviews_json', config) #Load Raw Reviews data
 
